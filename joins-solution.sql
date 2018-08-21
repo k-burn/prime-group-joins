@@ -11,7 +11,7 @@ JOIN "products"
 ON "products"."id" = "line_items"."product_id";
 
 
--- 3. Which warehouses have cheetos?
+-- 3. Which warehouses have cheetos? I also included how many they have on hand
 SELECT "warehouse"."id", "warehouse"."warehouse", "warehouse_product"."on_hand"
 FROM "warehouse"
 JOIN "warehouse_product"
@@ -20,7 +20,7 @@ JOIN "products" ON "products"."id" = "warehouse_product"."product_id"
 WHERE "products"."description" ILIKE 'cheetos';
 
 
--- 4. Which warehouses have diet pepsi?
+-- 4. Which warehouses have diet pepsi? I also inclueded how many they have on hand
 SELECT "warehouse"."id", "warehouse"."warehouse", "warehouse_product"."on_hand"
 FROM "warehouse"
 JOIN "warehouse_product"
@@ -30,13 +30,20 @@ WHERE "products"."description" ILIKE 'diet pepsi';
 
 
 -- 5. Get the number of orders for each customer. NOTE: It is OK if those without orders are not included in results.
-SELECT *
-COUNT ("orders"."address_id")
-FROM "customers"
-JOIN "orders" ON "customer"."id" = "orders"."address_id"
-JOIN "addresses" ON "addresses"."customer_id"
-GROUP BY "customers"
-ORDER BY "count" DESC;
+SELECT "customers"."last_name",
+COUNT("orders"."address_id")
+FROM "orders"
+JOIN "addresses" ON "addresses"."id" = "orders"."address_id"
+JOIN "customers" ON "customers"."id" = "addresses"."customer_id"
+GROUP BY "customers"."last_name";
+
+SELECT "customers",
+COUNT("orders"."address_id")
+FROM "orders"
+JOIN "addresses" ON "addresses"."id" = "orders"."address_id"
+JOIN "customers" ON "customers"."id" = "addresses"."customer_id"
+GROUP BY "customers";
+
 
 -- 6. How many customers do we have?
 SELECT COUNT (*)
