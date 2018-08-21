@@ -12,11 +12,12 @@ ON "products"."id" = "line_items"."product_id";
 
 
 -- 3. Which warehouses have cheetos?
-SELECT "warehouse"."id", "warehouse"."warehouse" "warehouse_product"."on_hand"
+SELECT "warehouse"."id", "warehouse"."warehouse", "warehouse_product"."on_hand"
 FROM "warehouse"
 JOIN "warehouse_product"
 ON "warehouse"."id" = "warehouse_product"."warehouse_id"
-WHERE "warehouse_product"."product_id" = 5;
+JOIN "products" ON "products"."id" = "warehouse_product"."product_id"
+WHERE "products"."description" ILIKE 'cheetos';
 
 
 -- 4. Which warehouses have diet pepsi?
@@ -24,7 +25,8 @@ SELECT "warehouse"."id", "warehouse"."warehouse", "warehouse_product"."on_hand"
 FROM "warehouse"
 JOIN "warehouse_product"
 ON "warehouse"."id" = "warehouse_product"."warehouse_id"
-WHERE "warehouse_product"."product_id" = 6;
+JOIN "products" ON "products"."id" = "warehouse_product"."product_id"
+WHERE "products"."description" ILIKE 'diet pepsi';
 
 
 -- 5. Get the number of orders for each customer. NOTE: It is OK if those without orders are not included in results.
